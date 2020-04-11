@@ -6,7 +6,7 @@ from pathlib import Path
 import youtube_dl
 from selenium.webdriver.common.keys import Keys
 
-from freemiumSpotify.LogWriter import *
+from freemiumSpotify.LogHandler import *
 
 
 class FreemiumSpotify:
@@ -92,9 +92,9 @@ class FreemiumSpotify:
             }
             with youtube_dl.YoutubeDL(ydl_opts) as ydl:
                 ydl.download([video_url])
-            LogWriter.write_to_log_file_index(index, self.YES_MARK, self.playlist_download_log)
+            LogHandler.write_to_log_file_index(index, self.YES_MARK, self.playlist_download_log)
         except Exception:
-            LogWriter.write_to_log_file_index(index, self.FAIL_MARK, self.playlist_download_log)
+            LogHandler.write_to_log_file_index(index, self.FAIL_MARK, self.playlist_download_log)
 
     def find_and_download_mp3(self):
         download_length = len(self.song_names_and_artists)
@@ -102,7 +102,7 @@ class FreemiumSpotify:
             any_download = False
             for i in range(download_length):
                 print(i + 1, "/", len(self.song_names_and_artists))
-                if LogWriter.read_from_log_file_index(i, self.playlist_download_log) != self.YES_MARK:
+                if LogHandler.read_from_log_file_index(i, self.playlist_download_log) != self.YES_MARK:
                     video_url = self.find_mp3_url_from_youtube(self.song_names_and_artists[i])
                     self.download_mp3_from_url(video_url, i)
                     any_download = any_download or True

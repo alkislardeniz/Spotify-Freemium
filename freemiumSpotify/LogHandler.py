@@ -1,4 +1,4 @@
-class LogWriter:
+class LogHandler:
     @staticmethod
     def write_to_log_file_index(line_index, mark, playlist_download_log):
         log_file = open(playlist_download_log, "r")
