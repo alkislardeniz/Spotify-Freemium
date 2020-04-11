@@ -6,7 +6,7 @@ from pathlib import Path
 import youtube_dl
 from selenium.webdriver.common.keys import Keys
 
-from LogWriter import *
+from freemiumSpotify.LogWriter import *
 
 
 class FreemiumSpotify:

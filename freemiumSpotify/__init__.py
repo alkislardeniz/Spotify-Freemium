@@ -1,11 +1,10 @@
 from selenium import webdriver
 
-from FreemiumSpotify import *
+from freemiumSpotify.FreemiumSpotify import *
 
 
 def main():
-    spotify_playlist_url = "https://open.spotify.com/playlist/1gGDDJ70mCzp59JQnoKC0M"
-    # spotify_playlist_url = "https://open.spotify.com/playlist/7Jw2ZFk6NKVwXrW8MmOeGg
+    spotify_playlist_url = "https://open.spotify.com/playlist/7Jw2ZFk6NKVwXrW8MmOeGg"
 
     driver = webdriver.Firefox()
     fs = FreemiumSpotify(spotify_playlist_url, driver)
