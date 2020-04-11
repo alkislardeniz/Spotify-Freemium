@@ -18,19 +18,20 @@ class FreemiumSpotify:
 
     def __init__(self, spotify_playlist_url, driver):
         self.spotify_playlist_url = spotify_playlist_url
-
         self.playlist_id = spotify_playlist_url[spotify_playlist_url.rindex('/') + 1:]
-
         self.playlist_file_name = getcwd() + "/" + self.playlist_id + "/" + "playlist.txt"
         self.playlist_download_log = getcwd() + "/" + self.playlist_id + "/" + "download_status.txt"
+
         self.driver = driver
+        driver.get("http://www.youtube.com")
+
+        self.song_names_and_artists = []
 
     def create_download_directory(self, path):
         p = Path(path)
         p.mkdir(exist_ok=True)
 
     def retrieve_playlist_from_spotify(self):
-        song_names_and_artists = []
         if not path.exists(self.playlist_file_name):
             self.driver.execute_script("window.open('');")
             self.driver.switch_to.window(self.driver.window_handles[1])
@@ -54,7 +55,7 @@ class FreemiumSpotify:
             for i in range(playlist_size):
                 playlist_file.write(song_names[i].text.lower() + " " + song_artists[i].text.lower() + "\n")
                 playlist_download_log.write(self.NO_MARK + "\n")
-                song_names_and_artists.append(song_names[i].text.lower() + " " + song_artists[i].text.lower())
+                self.song_names_and_artists.append(song_names[i].text.lower() + " " + song_artists[i].text.lower())
 
             playlist_file.close()
             playlist_download_log.close()
@@ -62,16 +63,14 @@ class FreemiumSpotify:
         else:
             playlist_file = open(self.playlist_file_name, 'r')
             for line in playlist_file:
-                song_names_and_artists.append(line)
+                self.song_names_and_artists.append(line)
             playlist_file.close()
 
-        return song_names_and_artists
-
-    def find_mp3_url_from_youtube(self, index, song_names_and_artists):
+    def find_mp3_url_from_youtube(self, song_name_and_artist):
         self.driver.switch_to.window(self.driver.window_handles[0])
         youtube_search_bar = self.driver.find_element_by_name("search_query")
         youtube_search_bar.clear()
-        youtube_search_bar.send_keys(song_names_and_artists[index])
+        youtube_search_bar.send_keys(song_name_and_artist)
         youtube_search_button = self.driver.find_element_by_id("search-icon-legacy")
         youtube_search_button.click()
 
@@ -97,14 +96,14 @@ class FreemiumSpotify:
         except Exception:
             LogWriter.write_to_log_file_index(index, self.FAIL_MARK, self.playlist_download_log)
 
-    def find_and_download_mp3(self, song_names_and_artists):
-        download_length = len(song_names_and_artists)
+    def find_and_download_mp3(self):
+        download_length = len(self.song_names_and_artists)
         while True:
             any_download = False
             for i in range(download_length):
-                print(i + 1, "/", len(song_names_and_artists))
+                print(i + 1, "/", len(self.song_names_and_artists))
                 if LogWriter.read_from_log_file_index(i, self.playlist_download_log) != self.YES_MARK:
-                    video_url = self.find_mp3_url_from_youtube(i, song_names_and_artists)
+                    video_url = self.find_mp3_url_from_youtube(self.song_names_and_artists[i])
                     self.download_mp3_from_url(video_url, i)
                     any_download = any_download or True
                 else:

@@ -8,10 +8,8 @@ def main():
 
     driver = webdriver.Firefox()
     fs = FreemiumSpotify(spotify_playlist_url, driver)
-
-    driver.get("http://www.youtube.com")
-    song_names_and_artists = fs.retrieve_playlist_from_spotify()
-    fs.find_and_download_mp3(song_names_and_artists)
+    fs.retrieve_playlist_from_spotify()
+    fs.find_and_download_mp3()
     driver.close()
 
 
