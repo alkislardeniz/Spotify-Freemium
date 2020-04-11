@@ -101,12 +101,14 @@ class FreemiumSpotify:
         while True:
             any_download = False
             for i in range(download_length):
-                print(i + 1, "/", len(self.song_names_and_artists))
                 if LogHandler.read_from_log_file_index(i, self.playlist_download_log) != self.YES_MARK:
+                    print("Trying ", i + 1, "/", len(self.song_names_and_artists))
                     video_url = self.find_mp3_url_from_youtube(self.song_names_and_artists[i])
                     self.download_mp3_from_url(video_url, i)
                     any_download = any_download or True
                 else:
+                    print("Already downloaded ", i + 1, "/", len(self.song_names_and_artists))
                     any_download = any_download or False
             if not any_download:
+                print("Downloaded all the playlist successfully!")
                 break
