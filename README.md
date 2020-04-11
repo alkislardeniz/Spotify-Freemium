@@ -4,3 +4,10 @@
 
 <h1>What's that?</h1>
 <p>Spotify Freemium is a simple program to download any publicly available Spotify playlist from YouTube. To get rid of any <b>API usage</b> both for Spotify and YouTube, Selenium is used during fetching a playlist from Spotify and finding an alternative download url from YouTube. It downloads the video as mp3 format by using the youtube-dl library. So the source code is really simple by the help of Selenium and youtube-dl.</p>
+
+<h2>Prerequisites</h2>
+<p>To download dependencies(selenium, urllib3 and youtube-dl) of the project, you can use the following command: </p>
+
+```
+pip install -r requirements.txt
+```
