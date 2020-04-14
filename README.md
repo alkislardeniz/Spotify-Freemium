@@ -11,7 +11,7 @@
 ```
 pip install -r requirements.txt
 ```
-<b>Please don't forget to install a driver for your preferred browser.</b>
+<b>Please don't forget to install a Selenium driver for your preferred browser.</b>
 
 <h2>Running</h2>
 <p>Use the following command to run the program: </p>
