@@ -11,3 +11,10 @@
 ```
 pip install -r requirements.txt
 ```
+
+<h2>Running</h2>
+<p>Use the following command to run the program: </p>
+
+```
+python __init__.py <SPOTIFY_PLAYLIST_URL>
+```
