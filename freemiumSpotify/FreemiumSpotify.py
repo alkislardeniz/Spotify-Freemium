@@ -1,7 +1,9 @@
+import urllib.request
 from os import path, getcwd
 from pathlib import Path
 
 import youtube_dl
+from bs4 import BeautifulSoup
 from selenium.webdriver.common.keys import Keys
 
 from freemiumSpotify.FileHandler import *
@@ -21,7 +23,7 @@ class FreemiumSpotify:
         self.playlist_download_log = getcwd() + "/" + self.playlist_id + "/" + self.playlist_id + "_download_status.txt"
         self.playlist_size = getcwd() + "/" + self.playlist_id + "/" + self.playlist_id + "_size.txt"
         self.driver = driver
-        driver.get("http://www.youtube.com")
+        self.driver.get(self.spotify_playlist_url)
 
         self.song_names_and_artists = []
 
@@ -30,10 +32,6 @@ class FreemiumSpotify:
         p.mkdir(exist_ok=True)
 
     def retrieve_playlist_from_spotify(self):
-        self.driver.execute_script("window.open('');")
-        self.driver.switch_to.window(self.driver.window_handles[1])
-        self.driver.get(self.spotify_playlist_url)
-
         playlist_size = int(self.driver.find_element_by_css_selector(
             ".TrackListHeader__text-silence.TrackListHeader__entity-additional-info").text.split()[0])
         prev_playlist_size = int(FileHandler.read_from_file_index(0, self.playlist_size)) if path.exists(
@@ -76,16 +74,15 @@ class FreemiumSpotify:
         size_file.close()
 
         self.driver.close()
-        self.driver.switch_to.window(self.driver.window_handles[0])
 
     def find_mp3_url_from_youtube(self, song_name_and_artist):
-        youtube_search_bar = self.driver.find_element_by_name("search_query")
-        youtube_search_bar.clear()
-        youtube_search_bar.send_keys(song_name_and_artist)
-        youtube_search_button = self.driver.find_element_by_id("search-icon-legacy")
-        youtube_search_button.click()
-
-        return self.driver.find_element_by_id("video-title").get_property("href")
+        query = urllib.parse.quote(song_name_and_artist)
+        url = "https://www.youtube.com/results?search_query=" + query
+        response = urllib.request.urlopen(url)
+        html = response.read()
+        soup = BeautifulSoup(html, 'html.parser')
+        video = soup.find(attrs={'class': 'yt-uix-tile-link'})
+        return 'https://www.youtube.com' + video['href']
 
     def download_mp3_from_url(self, video_url, index):
         try:
