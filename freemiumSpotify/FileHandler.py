@@ -1,12 +1,12 @@
-class LogHandler:
+class FileHandler:
     @staticmethod
-    def write_to_log_file_index(line_index, mark, playlist_download_log):
-        log_file = open(playlist_download_log, "r")
+    def write_to_file_index(line_index, mark, file_name):
+        file = open(file_name, "r")
 
         count = 0
         new_file_content = ""
 
-        for line in log_file:
+        for line in file:
             stripped_line = line.strip()
             if count == line_index:
                 stripped_line = stripped_line.replace(stripped_line, mark)
@@ -15,24 +15,30 @@ class LogHandler:
 
         new_file_content = new_file_content.rstrip()
 
-        log_file.close()
+        file.close()
 
-        new_log_file = open(playlist_download_log, "w")
+        new_log_file = open(file_name, "w")
         new_log_file.write(new_file_content)
         new_log_file.close()
 
     @staticmethod
-    def read_from_log_file_index(line_index, playlist_download_log):
-        log_file = open(playlist_download_log, "r")
+    def read_from_file_index(line_index, file_name):
+        file = open(file_name, "r")
 
         count = 0
         line_read = ""
 
-        for line in log_file:
+        for line in file:
             stripped_line = line.strip()
             if count == line_index:
                 line_read = stripped_line
             count += 1
 
-        log_file.close()
+        file.close()
         return line_read
+
+    @staticmethod
+    def append_to_a_file(mark, file_name):
+        log_file = open(file_name, "a")
+        log_file.write("\n" + mark)
+        log_file.close()
