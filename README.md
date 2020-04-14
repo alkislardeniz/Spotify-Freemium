@@ -16,6 +16,12 @@ pip install -r requirements.txt
 <p>Use the following command to run the program: </p>
 
 ```
-python __init__.py <SPOTIFY_PLAYLIST_URL>
+python __init__.py <SPOTIFY_PLAYLIST_URL> <BROWSER_TYPE>
+```
+Browser types are Chrome, Firefox, Opera and Safari. Please don't forget to install driver for your preferred browser.
+
+<b>Example call:</b>
+```
+python __init__.py https://open.spotify.com/playlist/7Jw2ZFk6NKVwXrW8MmOeGg chrome
 ```
 <p>If there is an update in your playlist(a song was added and the number of songs in your playlist was increased), you can call the program again and it will download the newly added songs in your playlist.</p>
