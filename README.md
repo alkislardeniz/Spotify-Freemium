@@ -18,3 +18,4 @@ pip install -r requirements.txt
 ```
 python __init__.py <SPOTIFY_PLAYLIST_URL>
 ```
+<p>If there is an update in your playlist(a song was added and the number of songs in your playlist was increased), you can call the program again and it will download the newly added songs in your playlist.</p>
