@@ -4,6 +4,7 @@ from selenium import webdriver
 
 from freemiumSpotify.FreemiumSpotify import *
 
+
 def create_driver(type):
     if type.lower() == "chrome":
         return webdriver.Chrome()
@@ -13,13 +14,19 @@ def create_driver(type):
         return webdriver.Opera()
     elif type.lower == "safari":
         return webdriver.Safari()
+    else:
+        return None
+
 
 def main(spotify_playlist_url, type):
     driver = create_driver(type)
-    fs = FreemiumSpotify(spotify_playlist_url, driver)
-    fs.retrieve_playlist_from_spotify()
-    fs.find_and_download_mp3()
-    driver.close()
+    if driver is not None:
+        fs = FreemiumSpotify(spotify_playlist_url, driver)
+        fs.retrieve_playlist_from_spotify()
+        fs.find_and_download_mp3()
+        driver.close()
+    else:
+        print("Browser types are Chrome, Firefox, Opera and Safari.")
 
 
 if __name__ == "__main__":
