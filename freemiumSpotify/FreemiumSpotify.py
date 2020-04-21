@@ -16,11 +16,13 @@ class FreemiumSpotify:
     FAIL_MARK = "F"
 
     def __init__(self, spotify_playlist_url, driver):
-        self.spotify_playlist_url = spotify_playlist_url
         self.playlist_id = spotify_playlist_url[spotify_playlist_url.rindex('/') + 1:]
         self.log_file_name = getcwd() + "/" + self.playlist_id + "/" + self.playlist_id + "_download_log.pkl"
+        if not path.exists(self.log_file_name):
+            FileHandler.create_download_directory(self.playlist_id)
+
         self.driver = driver
-        self.driver.get(self.spotify_playlist_url)
+        self.driver.get(spotify_playlist_url)
 
         self.playlist_download_status = {}
         if path.exists(self.log_file_name):
@@ -36,9 +38,6 @@ class FreemiumSpotify:
 
         song_names = self.driver.find_elements_by_css_selector(".tracklist-name.ellipsis-one-line")
         song_artists = self.driver.find_elements_by_css_selector(".TrackListRow__artists.ellipsis-one-line")
-
-        if not path.exists(self.log_file_name):
-            FileHandler.create_download_directory(self.playlist_id)
 
         for i in range(playlist_size):
             song_name_and_artist = song_names[i].text.lower() + " " + song_artists[i].text.lower()
