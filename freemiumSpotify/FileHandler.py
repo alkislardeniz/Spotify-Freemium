@@ -1,44 +1,19 @@
+import pickle
+from pathlib import Path
+
+
 class FileHandler:
     @staticmethod
-    def write_to_file_index(line_index, mark, file_name):
-        file = open(file_name, "r")
-
-        count = 0
-        new_file_content = ""
-
-        for line in file:
-            stripped_line = line.strip()
-            if count == line_index:
-                stripped_line = stripped_line.replace(stripped_line, mark)
-            new_file_content += stripped_line + "\n"
-            count += 1
-
-        new_file_content = new_file_content.rstrip()
-
-        file.close()
-
-        new_log_file = open(file_name, "w")
-        new_log_file.write(new_file_content)
-        new_log_file.close()
+    def save_obj(obj, file_name):
+        with open(file_name, 'wb') as f:
+            pickle.dump(obj, f, pickle.HIGHEST_PROTOCOL)
 
     @staticmethod
-    def read_from_file_index(line_index, file_name):
-        file = open(file_name, "r")
-
-        count = 0
-        line_read = ""
-
-        for line in file:
-            stripped_line = line.strip()
-            if count == line_index:
-                line_read = stripped_line
-            count += 1
-
-        file.close()
-        return line_read
+    def load_obj(file_name):
+        with open(file_name, 'rb') as f:
+            return pickle.load(f)
 
     @staticmethod
-    def append_to_a_file(mark, file_name):
-        log_file = open(file_name, "a")
-        log_file.write("\n" + mark)
-        log_file.close()
+    def create_download_directory(path):
+        p = Path(path)
+        p.mkdir(exist_ok=True)
