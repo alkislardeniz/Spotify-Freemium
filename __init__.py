@@ -24,7 +24,6 @@ def main(spotify_playlist_url, type):
         fs = FreemiumSpotify(spotify_playlist_url, driver)
         fs.retrieve_playlist_from_spotify()
         fs.find_and_download_mp3()
-        driver.close()
     else:
         print("Browser types are Chrome, Firefox, Opera and Safari.")
 
